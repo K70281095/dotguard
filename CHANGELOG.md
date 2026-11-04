@@ -6,6 +6,16 @@ uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Quoted values can span several lines.
+- `$NAME`, `${NAME}`, `${NAME:-default}` and `${NAME-default}` references to keys defined earlier
+  in the same file, with a new `DG011` warning for references that cannot be resolved.
+
+### Fixed
+
+- `dotguard init --keep-values` now escapes `$` so values survive a round trip.
+
 ## [0.1.0] - 2026-11-04
 
 ### Added

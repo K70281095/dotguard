@@ -153,7 +153,9 @@ def _guess_type(value: str) -> str:
 def _quote(value: str) -> str:
     if value == "" or all(c.isalnum() or c in "-_./:@,+" for c in value):
         return value
-    escaped = value.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
+    escaped = (
+        value.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("$", "\\$")
+    )
     return f'"{escaped}"'
 
 

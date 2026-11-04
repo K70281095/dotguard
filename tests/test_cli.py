@@ -100,9 +100,10 @@ class CliTests(unittest.TestCase):
         self.assertEqual(example.get("DB_PASSWORD").value, "")
 
     def test_render_example_round_trips_awkward_values(self):
-        source = parse('GREETING="hello world # not a comment"\n')
+        source = parse("GREETING=\"hello world # not a comment\"\nPRICE='costs $5'\n")
         example = parse(render_example(source, keep_values=True))
         self.assertEqual(example.get("GREETING").value, "hello world # not a comment")
+        self.assertEqual(example.get("PRICE").value, "costs $5")
 
 
 if __name__ == "__main__":

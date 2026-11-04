@@ -62,6 +62,17 @@ def check(env: EnvFile, example: EnvFile, strict: bool = False) -> list[Issue]:
 
     documented = set(example.keys())
     for entry in env.entries:
+        for name in entry.unresolved:
+            issues.append(
+                Issue(
+                    "DG011",
+                    f"{entry.key} references ${{{name}}}, which is not defined above it",
+                    Severity.WARNING,
+                    env.path,
+                    entry.line,
+                    entry.key,
+                )
+            )
         if entry.key not in documented:
             issues.append(
                 Issue(

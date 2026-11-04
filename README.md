@@ -261,16 +261,34 @@ export KEY=value                # "export" prefix is allowed
 KEY=value # trailing comment    # needs whitespace before "#"
 URL=https://example.com/#anchor # "#" inside a value is kept
 KEY="double \"quoted\"\nwith escapes"   # \n \t \r \" \\ \$
-KEY='single quoted, taken literally'
+KEY='single quoted, taken literally, even $HOME'
 EMPTY=
+
+# Quoted values can span several lines (handy for certificates):
+CERT="-----BEGIN CERTIFICATE-----
+MIIB...
+-----END CERTIFICATE-----"
+
+# References to keys defined earlier in the same file:
+HOST=localhost
+PORT=5432
+DATABASE_URL=postgres://${HOST}:${PORT}/app   # also $HOST
+LOG_DIR=${LOG_ROOT:-/var/log}/app             # default if unset or empty
+LOG_FILE=${LOG_NAME-app.log}                   # default only if unset
+PRICE="costs \$5"                             # \$ keeps a literal dollar sign
 ```
+
+References work in unquoted and double-quoted values, never in single-quoted ones. A reference to
+a key that is not defined above it expands to an empty string and `check` warns about it
+(`DG011`). Values are never read from your shell's environment, so results are the same on every
+machine.
 
 Duplicate keys and malformed lines are reported with their file and line number.
 
 ## Roadmap
 
-- [ ] `${VAR}` interpolation when checking values
-- [ ] Multi-line double-quoted values
+- [x] `${VAR}` interpolation when checking values
+- [x] Multi-line quoted values
 - [ ] Publish to PyPI
 - [ ] `dotguard diff` to compare two environments (e.g. staging vs production keys)
 - [ ] Optional JSON Schema export

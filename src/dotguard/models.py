@@ -22,6 +22,8 @@ class Entry:
     annotations: dict[str, str] = field(default_factory=dict)
     # Plain comment lines above the key, used as human documentation.
     doc: list[str] = field(default_factory=list)
+    # Names referenced as $NAME / ${NAME} that were not defined earlier.
+    unresolved: list[str] = field(default_factory=list)
 
 
 @dataclass

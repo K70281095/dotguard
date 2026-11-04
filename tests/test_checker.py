@@ -72,6 +72,10 @@ class CheckerTests(unittest.TestCase):
         self.assertIn(("DG010", "A"), codes("A=1\n", "# @type colour\nA=\n"))
         self.assertIn(("DG010", "A"), codes("A=1\n", "# @pattern [unclosed\nA=\n"))
 
+    def test_unresolved_reference_warning(self):
+        issues = check(parse("A=${NOPE}\n", ".env"), parse("A=\n", ".env.example"))
+        self.assertEqual([(i.code, i.severity) for i in issues], [("DG011", Severity.WARNING)])
+
     def test_secret_values_are_masked_in_messages(self):
         issues = check(
             parse("TOKEN=hunter2\n", ".env"),

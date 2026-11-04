@@ -17,6 +17,7 @@ filter on them in scripts and CI.
 | `DG008` | warning | A `@deprecated` key is still set. | Migrate to the replacement and remove it. |
 | `DG009` | warning | Unknown annotation (often a typo such as `@requird`). | Fix the spelling. |
 | `DG010` | error | Invalid annotation: unknown `@type`, or a `@pattern` that is not a valid regex. | Fix the example file. |
+| `DG011` | warning | A value references `$NAME` / `${NAME}`, but `NAME` is not defined above it. | Define it earlier, give a default (`${NAME:-x}`), or escape the dollar sign (`\$`). |
 
 ## `scan` rules
 

@@ -37,6 +37,53 @@ class ParserTests(unittest.TestCase):
         env = parse("# @required\n\nA=1\n")
         self.assertEqual(env.get("A").annotations, {})
 
+    def test_multiline_double_quoted(self):
+        env = parse('CERT="line one\nline two"\nNEXT=1\n')
+        self.assertEqual(env.get("CERT").value, "line one\nline two")
+        self.assertEqual(env.get("CERT").line, 1)
+        self.assertEqual(env.get("NEXT").line, 3)
+
+    def test_multiline_single_quoted_keeps_hashes_and_dollars(self):
+        env = parse("KEY='-----BEGIN-----\n# not a comment $HOME\n-----END-----' # note\n")
+        self.assertEqual(env.get("KEY").value, "-----BEGIN-----\n# not a comment $HOME\n-----END-----")
+
+    def test_unterminated_multiline_reports_start_line(self):
+        with self.assertRaises(ParseError) as ctx:
+            parse('A=1\nB="never closed\nC=3\n', path=".env")
+        self.assertIn(".env:2:", str(ctx.exception))
+
+    def test_interpolation(self):
+        env = parse(
+            "HOST=db\nPORT=5432\n"
+            "URL=postgres://${HOST}:$PORT/app\n"
+            'QUOTED="${HOST}-x"\n'
+            "LITERAL='${HOST}'\n"
+            'ESCAPED="\\${HOST}"\n'
+            "BARE_ESCAPED=\\$HOST\n"
+        )
+        self.assertEqual(env.get("URL").value, "postgres://db:5432/app")
+        self.assertEqual(env.get("QUOTED").value, "db-x")
+        self.assertEqual(env.get("LITERAL").value, "${HOST}")
+        self.assertEqual(env.get("ESCAPED").value, "${HOST}")
+        self.assertEqual(env.get("BARE_ESCAPED").value, "$HOST")
+
+    def test_interpolation_defaults(self):
+        env = parse("EMPTY=\nA=${MISSING:-one}\nB=${EMPTY:-two}\nC=${EMPTY-three}\nD=${MISSING-four}\n")
+        self.assertEqual(
+            [env.get(k).value for k in "ABCD"],
+            ["one", "two", "", "four"],
+        )
+        self.assertEqual(env.get("A").unresolved, [])
+
+    def test_unresolved_references_are_recorded(self):
+        env = parse("A=${LATER}/$LATER\nLATER=x\n")
+        self.assertEqual(env.get("A").value, "/")
+        self.assertEqual(env.get("A").unresolved, ["LATER"])
+
+    def test_interpolation_can_be_disabled(self):
+        env = parse("A=1\nB=${A}\n", interpolate=False)
+        self.assertEqual(env.get("B").value, "${A}")
+
     def test_errors(self):
         cases = {
             "NOEQUALS\n": "expected KEY=value",
