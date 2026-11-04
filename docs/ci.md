@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: K70281095/dotguard@v0.1.0
+      - uses: K70281095/dotguard@v0.2.0
         with:
           command: scan
           args: .env.example
@@ -59,7 +59,7 @@ dotguard:
 ```yaml
 repos:
   - repo: https://github.com/K70281095/dotguard
-    rev: v0.1.0
+    rev: v0.2.0
     hooks:
       - id: dotguard-scan    # scans .env.example (and any *.env.example) when they change
       - id: dotguard-check   # checks .env against .env.example

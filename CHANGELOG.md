@@ -6,8 +6,11 @@ uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-04
+
 ### Added
 
+- Published to PyPI as `dotguard-cli`, with a release workflow using trusted publishing.
 - `dotguard diff`: compare the keys (and, with `--values`, the values) of two env files.
 - Quoted values can span several lines.
 - `$NAME`, `${NAME}`, `${NAME:-default}` and `${NAME-default}` references to keys defined earlier
@@ -30,5 +33,6 @@ uses [Semantic Versioning](https://semver.org/).
 - Output formats: `text`, `json` and `github` (Actions annotations).
 - Composite GitHub Action and pre-commit hooks.
 
-[Unreleased]: https://github.com/K70281095/dotguard/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/K70281095/dotguard/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/K70281095/dotguard/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/K70281095/dotguard/releases/tag/v0.1.0

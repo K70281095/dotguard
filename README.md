@@ -59,6 +59,14 @@ examples/.env:11  warning DG002  OLD_FEATURE_FLAG is not documented in examples/
 
 ## Install
 
+From PyPI (the package is called `dotguard-cli`; the command is `dotguard`):
+
+```bash
+pip install dotguard-cli
+```
+
+Or the latest code straight from GitHub:
+
 ```bash
 pip install git+https://github.com/K70281095/dotguard.git
 ```
@@ -225,7 +233,7 @@ This repository is also a composite action:
 
 ```yaml
 - uses: actions/checkout@v5
-- uses: K70281095/dotguard@v0.1.0
+- uses: K70281095/dotguard@v0.2.0
   with:
     command: scan
     args: .env.example
@@ -247,7 +255,7 @@ Or install and run it yourself:
 # .pre-commit-config.yaml
 repos:
   - repo: https://github.com/K70281095/dotguard
-    rev: v0.1.0
+    rev: v0.2.0
     hooks:
       - id: dotguard-scan
 ```
@@ -306,7 +314,7 @@ Duplicate keys and malformed lines are reported with their file and line number.
 
 - [x] `${VAR}` interpolation when checking values
 - [x] Multi-line quoted values
-- [ ] Publish to PyPI
+- [x] Publish to PyPI (as `dotguard-cli`)
 - [x] `dotguard diff` to compare two environments (e.g. staging vs production keys)
 - [ ] Optional JSON Schema export
 

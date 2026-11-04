@@ -74,9 +74,22 @@ Use the imperative mood and keep the first line under ~70 characters, for exampl
 
 ## Releasing (maintainers)
 
+Releases are published to PyPI as **`dotguard-cli`** (the name `dotguard` was already taken
+there; the command and the import name are still `dotguard`).
+
 1. Move the **Unreleased** entries in `CHANGELOG.md` under a new version heading.
 2. Bump `version` in `pyproject.toml` and `__version__` in `src/dotguard/__init__.py`.
-3. Tag the commit: `git tag v0.X.Y && git push --tags`.
+3. Commit and push, then create a GitHub release whose tag is `v` + that version, e.g. `v0.2.0`.
+4. The **Release** workflow checks the tag, builds the package and uploads it to PyPI.
+
+One-time PyPI setup (trusted publishing, no API token needed):
+
+1. Sign in at [pypi.org](https://pypi.org) and open **Your projects → Publishing → Add a new
+   pending publisher**.
+2. Fill in: PyPI project name `dotguard-cli`, owner `K70281095`, repository `dotguard`,
+   workflow `release.yml`, environment `pypi`.
+3. On GitHub, create the environment under **Settings → Environments → New environment →
+   `pypi`**.
 
 By contributing, you agree that your contributions are licensed under the [MIT License](LICENSE)
 and that you will follow the [Code of Conduct](CODE_OF_CONDUCT.md).
