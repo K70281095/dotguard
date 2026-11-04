@@ -19,7 +19,6 @@ Annotation comments directly above a key attach metadata to it:
 from __future__ import annotations
 
 import re
-from typing import Dict, List, Tuple
 
 from dotguard.models import Entry, EnvFile
 
@@ -43,8 +42,8 @@ def parse_file(path: str) -> EnvFile:
 
 def parse(text: str, path: str = "<string>") -> EnvFile:
     env = EnvFile(path=path)
-    annotations: Dict[str, str] = {}
-    doc: List[str] = []
+    annotations: dict[str, str] = {}
+    doc: list[str] = []
 
     for number, raw in enumerate(text.splitlines(), start=1):
         line = raw.strip()
@@ -74,7 +73,7 @@ def parse(text: str, path: str = "<string>") -> EnvFile:
     return env
 
 
-def _parse_assignment(line: str, path: str, number: int) -> Tuple[str, str]:
+def _parse_assignment(line: str, path: str, number: int) -> tuple[str, str]:
     if line.startswith("export "):
         line = line[len("export "):].lstrip()
 
@@ -100,7 +99,7 @@ def _parse_assignment(line: str, path: str, number: int) -> Tuple[str, str]:
     return key, value
 
 
-def _read_quoted(text: str, quote: str, path: str, number: int) -> Tuple[str, str]:
+def _read_quoted(text: str, quote: str, path: str, number: int) -> tuple[str, str]:
     i = 1
     while i < len(text):
         char = text[i]

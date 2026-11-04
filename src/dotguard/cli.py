@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import os
 import sys
-from typing import List, Optional
 
 from dotguard import __version__
 from dotguard.checker import check
@@ -66,7 +65,7 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         if args.command == "check":
@@ -82,7 +81,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         return EXIT_USAGE
 
 
-def _exit_code(issues: List[Issue], fail_on_warning: bool) -> int:
+def _exit_code(issues: list[Issue], fail_on_warning: bool) -> int:
     if any(i.severity is Severity.ERROR for i in issues):
         return EXIT_PROBLEMS
     if fail_on_warning and issues:
@@ -97,7 +96,7 @@ def _cmd_check(args: argparse.Namespace) -> int:
 
 
 def _cmd_scan(args: argparse.Namespace) -> int:
-    issues: List[Issue] = []
+    issues: list[Issue] = []
     for path in args.files:
         issues.extend(scan(parse_file(path)))
     render(issues, args.format)

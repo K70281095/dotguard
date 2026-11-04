@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-from typing import List
 
 from dotguard.models import Entry, EnvFile, Issue, Severity
 from dotguard.types import NUMERIC_TYPES, VALIDATORS
@@ -21,13 +20,13 @@ KNOWN_ANNOTATIONS = {
 }
 
 
-def check(env: EnvFile, example: EnvFile, strict: bool = False) -> List[Issue]:
+def check(env: EnvFile, example: EnvFile, strict: bool = False) -> list[Issue]:
     """Return every issue found in ``env`` according to ``example``.
 
     ``strict`` turns keys that exist only in ``env`` into errors instead of
     warnings.
     """
-    issues: List[Issue] = []
+    issues: list[Issue] = []
 
     for spec in example.entries:
         issues.extend(_check_annotations(spec, example.path))
@@ -78,7 +77,7 @@ def check(env: EnvFile, example: EnvFile, strict: bool = False) -> List[Issue]:
     return issues
 
 
-def _check_annotations(spec: Entry, path: str) -> List[Issue]:
+def _check_annotations(spec: Entry, path: str) -> list[Issue]:
     issues = []
     for name in spec.annotations:
         if name not in KNOWN_ANNOTATIONS:
@@ -125,7 +124,7 @@ def _check_annotations(spec: Entry, path: str) -> List[Issue]:
     return issues
 
 
-def _check_value(entry: Entry, spec: Entry, path: str) -> List[Issue]:
+def _check_value(entry: Entry, spec: Entry, path: str) -> list[Issue]:
     rules = spec.annotations
     value = entry.value
 

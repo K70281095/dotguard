@@ -23,10 +23,8 @@ class SecretScanTests(unittest.TestCase):
         self.assertEqual(found, [("DS001", "KEY")])
 
     def test_placeholders_are_ignored(self):
-        text = "\n".join(
-            f"API_TOKEN_{i}={value}"
-            for i, value in enumerate(["", "changeme", "<your-token>", "xxxxxxxx", "${TOKEN}", "your_api_key"])
-        )
+        placeholders = ["", "changeme", "<your-token>", "xxxxxxxx", "${TOKEN}", "your_api_key"]
+        text = "\n".join(f"API_TOKEN_{i}={value}" for i, value in enumerate(placeholders))
         self.assertEqual(codes(text + "\n"), [])
 
     def test_high_entropy_value_under_sensitive_name(self):

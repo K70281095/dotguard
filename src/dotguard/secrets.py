@@ -5,13 +5,12 @@ from __future__ import annotations
 import math
 import re
 from collections import Counter
-from typing import List, Tuple
 
 from dotguard.models import EnvFile, Issue, Severity
 
 # Well-known credential formats. Each match is an error: these are never
 # placeholders.
-KNOWN_TOKENS: List[Tuple[str, "re.Pattern[str]"]] = [
+KNOWN_TOKENS: list[tuple[str, re.Pattern[str]]] = [
     ("AWS access key ID", re.compile(r"\b(?:AKIA|ASIA)[0-9A-Z]{16}\b")),
     ("GitHub token", re.compile(r"\bgh[pousr]_[A-Za-z0-9]{36,}\b")),
     ("GitHub fine-grained token", re.compile(r"\bgithub_pat_[A-Za-z0-9_]{60,}\b")),
@@ -47,9 +46,9 @@ def shannon_entropy(value: str) -> float:
     return -sum((n / total) * math.log2(n / total) for n in counts.values())
 
 
-def scan(env: EnvFile) -> List[Issue]:
+def scan(env: EnvFile) -> list[Issue]:
     """Report values in ``env`` that look like real credentials."""
-    issues: List[Issue] = []
+    issues: list[Issue] = []
 
     for entry in env.entries:
         value = entry.value

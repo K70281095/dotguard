@@ -207,7 +207,7 @@ even with `--keep-values`. It refuses to overwrite an existing file unless you p
 This repository is also a composite action:
 
 ```yaml
-- uses: actions/checkout@v4
+- uses: actions/checkout@v5
 - uses: K70281095/dotguard@v0.1.0
   with:
     command: scan
@@ -217,7 +217,7 @@ This repository is also a composite action:
 Or install and run it yourself:
 
 ```yaml
-- uses: actions/setup-python@v5
+- uses: actions/setup-python@v6
   with:
     python-version: "3.12"
 - run: pip install git+https://github.com/K70281095/dotguard.git

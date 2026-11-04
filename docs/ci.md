@@ -17,7 +17,7 @@ jobs:
   dotguard:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: K70281095/dotguard@v0.1.0
         with:
           command: scan
@@ -37,7 +37,7 @@ Output uses the `github` format, so problems show up as annotations on the pull 
 ## GitHub Actions (manual)
 
 ```yaml
-- uses: actions/setup-python@v5
+- uses: actions/setup-python@v6
   with:
     python-version: "3.12"
 - run: pip install git+https://github.com/K70281095/dotguard.git
