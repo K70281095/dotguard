@@ -176,6 +176,23 @@ Scans files you intend to commit (default: `.env.example`) for:
 
 Obvious placeholders such as `changeme`, `<your-token>`, `xxxx` and `${VAR}` are ignored.
 
+### `dotguard diff`
+
+```
+dotguard diff LEFT RIGHT [--values] [--format text|json|github] [--fail-on-warning]
+```
+
+Compares two environment files, for example staging and production, and reports keys that
+exist in only one of them (**DD001**, **DD002**). With `--values` it also lists keys whose values
+differ (**DD003**, warning). Values themselves are never printed, so the output is safe to paste
+into a ticket or a CI log.
+
+```console
+$ dotguard diff .env.staging .env.production --values
+.env.staging:4  error DD001  FEATURE_X is set in .env.staging but missing from .env.production
+.env.staging:2  warning DD003  DATABASE_URL has a different value in .env.production:2
+```
+
 ### `dotguard init`
 
 ```
@@ -290,7 +307,7 @@ Duplicate keys and malformed lines are reported with their file and line number.
 - [x] `${VAR}` interpolation when checking values
 - [x] Multi-line quoted values
 - [ ] Publish to PyPI
-- [ ] `dotguard diff` to compare two environments (e.g. staging vs production keys)
+- [x] `dotguard diff` to compare two environments (e.g. staging vs production keys)
 - [ ] Optional JSON Schema export
 
 Ideas and pull requests are welcome. See the [issues](https://github.com/K70281095/dotguard/issues).

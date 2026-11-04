@@ -26,6 +26,14 @@ filter on them in scripts and CI.
 | `DS001` | error | The value matches a well-known credential format (AWS, GitHub, Slack, Stripe live, Google, OpenAI-style, PEM private key, JWT). |
 | `DS002` | warning | A long, high-entropy value under a sensitive-looking name or a `@secret` key. |
 
+## `diff` rules
+
+| Code | Severity | Meaning |
+|---|---|---|
+| `DD001` | error | The key is set in the first file but missing from the second. |
+| `DD002` | error | The key is set in the second file but missing from the first. |
+| `DD003` | warning | The key has a different value in each file (only with `--values`). |
+
 If `DS001` fires on a file you already committed, **rotate the credential**: removing it from
 the file does not remove it from git history.
 

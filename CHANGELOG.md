@@ -8,6 +8,7 @@ uses [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- `dotguard diff`: compare the keys (and, with `--values`, the values) of two env files.
 - Quoted values can span several lines.
 - `$NAME`, `${NAME}`, `${NAME:-default}` and `${NAME-default}` references to keys defined earlier
   in the same file, with a new `DG011` warning for references that cannot be resolved.

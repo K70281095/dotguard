@@ -1,4 +1,4 @@
-"""Command-line interface: ``dotguard check | scan | init``."""
+"""Command-line interface: ``dotguard check | scan | diff | init``."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import sys
 
 from dotguard import __version__
 from dotguard.checker import check
+from dotguard.differ import diff
 from dotguard.models import EnvFile, Issue, Severity
 from dotguard.parser import ParseError, parse_file
 from dotguard.report import FORMATS, render
@@ -52,6 +53,16 @@ def build_parser() -> argparse.ArgumentParser:
     )
     add_output_options(p_scan)
 
+    p_diff = sub.add_parser("diff", help="compare the keys of two env files, e.g. staging and production")
+    p_diff.add_argument("left", help="first file, e.g. .env.staging")
+    p_diff.add_argument("right", help="second file, e.g. .env.production")
+    p_diff.add_argument(
+        "--values",
+        action="store_true",
+        help="also report keys whose values differ (values themselves are never printed)",
+    )
+    add_output_options(p_diff)
+
     p_init = sub.add_parser("init", help="create .env.example from an existing .env")
     p_init.add_argument("--env", default=".env", help="source file (default: .env)")
     p_init.add_argument("--output", default=".env.example", help="file to write (default: .env.example)")
@@ -72,6 +83,8 @@ def main(argv: list[str] | None = None) -> int:
             return _cmd_check(args)
         if args.command == "scan":
             return _cmd_scan(args)
+        if args.command == "diff":
+            return _cmd_diff(args)
         return _cmd_init(args)
     except ParseError as exc:
         print(f"dotguard: parse error: {exc}", file=sys.stderr)
@@ -99,6 +112,12 @@ def _cmd_scan(args: argparse.Namespace) -> int:
     issues: list[Issue] = []
     for path in args.files:
         issues.extend(scan(parse_file(path)))
+    render(issues, args.format)
+    return _exit_code(issues, args.fail_on_warning)
+
+
+def _cmd_diff(args: argparse.Namespace) -> int:
+    issues = diff(parse_file(args.left), parse_file(args.right), compare_values=args.values)
     render(issues, args.format)
     return _exit_code(issues, args.fail_on_warning)
 
