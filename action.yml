@@ -1,0 +1,42 @@
+name: dotguard
+description: Validate .env files against a documented .env.example and catch committed secrets.
+author: Kanhaiya Kumar
+branding:
+  icon: shield
+  color: green
+
+inputs:
+  command:
+    description: "dotguard command to run: check, scan or init"
+    required: false
+    default: scan
+  args:
+    description: Extra arguments for the command, e.g. ".env.example" or "--strict"
+    required: false
+    default: ""
+  python-version:
+    description: Python version used to run dotguard
+    required: false
+    default: "3.12"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install dotguard
+      shell: bash
+      run: python -m pip install --quiet "${{ github.action_path }}"
+    - name: Run dotguard
+      shell: bash
+      env:
+        DOTGUARD_COMMAND: ${{ inputs.command }}
+        DOTGUARD_ARGS: ${{ inputs.args }}
+      # Inputs go through env vars, not string interpolation, to avoid shell injection.
+      run: |
+        if [ "$DOTGUARD_COMMAND" = "init" ]; then
+          dotguard init $DOTGUARD_ARGS
+        else
+          dotguard "$DOTGUARD_COMMAND" $DOTGUARD_ARGS --format github
+        fi

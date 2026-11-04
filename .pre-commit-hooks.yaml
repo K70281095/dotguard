@@ -1,0 +1,15 @@
+- id: dotguard-scan
+  name: dotguard scan
+  description: Look for real secrets in .env.example files.
+  entry: dotguard scan
+  language: python
+  files: (^|/)\.?[^/]*\.env\.example$|(^|/)\.env\.example$
+  pass_filenames: true
+
+- id: dotguard-check
+  name: dotguard check
+  description: Check .env against .env.example.
+  entry: dotguard check
+  language: python
+  pass_filenames: false
+  always_run: true

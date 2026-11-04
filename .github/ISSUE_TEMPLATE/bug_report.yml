@@ -1,0 +1,33 @@
+name: Bug report
+description: Something dotguard does is wrong or surprising.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! **Replace every real value with a placeholder** before pasting files.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you run, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: Minimal .env and .env.example
+      description: The smallest files that reproduce the problem.
+      render: bash
+  - type: input
+    id: command
+    attributes:
+      label: Command
+      placeholder: dotguard check --strict
+  - type: input
+    id: version
+    attributes:
+      label: dotguard and Python version
+      placeholder: "dotguard 0.1.0, Python 3.12, macOS 15"
+    validations:
+      required: true

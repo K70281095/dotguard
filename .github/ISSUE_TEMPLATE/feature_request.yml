@@ -1,0 +1,19 @@
+name: Feature request
+description: Suggest a new check, annotation, type or output format.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What could it look like in a .env.example or on the command line?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
